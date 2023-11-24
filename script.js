@@ -1,7 +1,6 @@
 document.getElementById('send-button').addEventListener('click', function() {
-  var userInput = document.getElementById('user-input').value.trim();
-  if (userInput !== '') {
-      // 创建用户发送的消息元素
+    var userInput = document.getElementById('user-input').value.trim();
+    if (userInput !== '') {
       var messageContainer = document.createElement('div');
       messageContainer.classList.add('message', 'sent');
       var message = document.createElement('span');
@@ -10,18 +9,18 @@ document.getElementById('send-button').addEventListener('click', function() {
       messageContainer.appendChild(message);
       document.getElementById('chat-window').appendChild(messageContainer);
       document.getElementById('user-input').value = '';
-
-      // 发送用户输入到后端
+  
+      // 向后端发送数据
       fetch('http://47.102.135.108:9843/chat', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ user_input: userInput }),
+          body: JSON.stringify({ question: userInput }), // 使用 question 字段
       })
       .then(response => response.json())
       .then(data => {
-          // 接收后端的回应并显示在聊天窗口中
+          // 处理后端的响应
           var botResponse = data.response;
           var botMessageContainer = document.createElement('div');
           botMessageContainer.classList.add('message', 'received');
@@ -34,5 +33,6 @@ document.getElementById('send-button').addEventListener('click', function() {
       .catch(error => {
           console.error('发生错误:', error);
       });
-  }
-});
+    }
+  });
+  
