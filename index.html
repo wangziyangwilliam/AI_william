@@ -1,8 +1,9 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
   <title>Chat Application</title>
   <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
   <div class="container">
@@ -11,16 +12,500 @@
     </header>
     <div class="chat-window" id="chat-window">
       <div class="message received">
+        <img src="william_avatar.jpg" alt="William's Avatar" class="avatar">
         <span class="username">William:</span>
-        <span class="text">Hi, how can I help you?</span>
+        <span class="text">CoCo你好，有什么可以帮助你的？</span>
       </div>
     </div>
     <div class="input-container">
-      <input type="text" id="user-input" placeholder="Type your message here...">
+      <input type="text" id="user-input" placeholder="Type your message here..." onkeypress="sendMessageOnEnter(event)">
       <button id="send-button">Send</button>
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    function sendMessageOnEnter(event) {
+      if (event.key === 'Enter') {
+        sendMessage();
+      }
+    }
+
+    function sendMessage() {
+      var userInput = document.getElementById('user-input').value.trim();
+      if (userInput !== '') {
+        var messageContainer = document.createElement('div');
+        messageContainer.classList.add('message', 'sent');
+        var message = document.createElement('span');
+        message.classList.add('text');
+        message.textContent = userInput;
+        messageContainer.appendChild(message);
+        document.getElementById('chat-window').appendChild(messageContainer);
+        document.getElementById('user-input').value = '';
+
+        const servers = axios.create({
+          baseURL: 'http://47.102.135.108:9850', // 修改为正确的 baseURL
+        });
+
+        // 向后端发送数据
+        servers.post('/chat', { question: userInput }, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then(response => {
+          // 获取服务器返回的数据
+          var data = response.data;
+          var botResponse = data.response;
+          var botMessageContainer = document.createElement('div');
+          botMessageContainer.classList.add('message', 'received');
+          var botMessage = document.createElement('span');
+          botMessage.classList.add('text');
+          botMessage.textContent = botResponse;
+          botMessageContainer.appendChild(botMessage);
+          document.getElementById('chat-window').appendChild(botMessageContainer);
+        })
+        .catch(error => {
+          console.error('发生错误:', error);
+        });
+      }
+    }
+  </script>
+</body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+  <title>Chat Application</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>私人助手-William</h1>
+    </header>
+    <div class="chat-window" id="chat-window">
+      <div class="message received">
+        <img src="william_avatar.jpg" alt="William's Avatar" class="avatar">
+        <span class="username">William:</span>
+        <span class="text">CoCo你好，有什么可以帮助你的？</span>
+      </div>
+    </div>
+    <div class="input-container">
+      <input type="text" id="user-input" placeholder="Type your message here..." onkeypress="sendMessageOnEnter(event)">
+      <button id="send-button">Send</button>
+    </div>
+  </div>
+
+  <script>
+    function sendMessageOnEnter(event) {
+      if (event.key === 'Enter') {
+        sendMessage();
+      }
+    }
+
+    function sendMessage() {
+      var userInput = document.getElementById('user-input').value.trim();
+      if (userInput !== '') {
+        var messageContainer = document.createElement('div');
+        messageContainer.classList.add('message', 'sent');
+        var userAvatar = document.createElement('img');
+        userAvatar.src = 'user_avatar.jpg'; // 用户的头像路径
+        userAvatar.alt = 'User Avatar';
+        userAvatar.classList.add('avatar');
+        messageContainer.appendChild(userAvatar);
+        var usernameSpan = document.createElement('span');
+        usernameSpan.classList.add('username');
+        usernameSpan.textContent = 'CoCo: ';
+        messageContainer.appendChild(usernameSpan);
+        var message = document.createElement('span');
+        message.classList.add('text');
+        message.textContent = userInput;
+        messageContainer.appendChild(message);
+        document.getElementById('chat-window').appendChild(messageContainer);
+        document.getElementById('user-input').value = '';
+
+        const servers = axios.create({
+          baseURL: 'http://47.102.135.108:9850', // 修改为正确的 baseURL
+        });
+
+        // 向后端发送数据
+        servers.post('/chat', { question: userInput }, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then(response => {
+          // 获取服务器返回的数据
+          var data = response.data;
+          var botResponse = data.response;
+          var botMessageContainer = document.createElement('div');
+          botMessageContainer.classList.add('message', 'received');
+          var botAvatar = document.createElement('img');
+          botAvatar.src = 'william_avatar.jpg'; // 机器人的头像路径
+          botAvatar.alt = 'William\'s Avatar';
+          botAvatar.classList.add('avatar');
+          botMessageContainer.appendChild(botAvatar);
+          var botUsernameSpan = document.createElement('span');
+          botUsernameSpan.classList.add('username');
+          botUsernameSpan.textContent = 'William: ';
+          botMessageContainer.appendChild(botUsernameSpan);
+          var botMessage = document.createElement('span');
+          botMessage.classList.add('text');
+          botMessage.textContent = botResponse;
+          botMessageContainer.appendChild(botMessage);
+          document.getElementById('chat-window').appendChild(botMessageContainer);
+        })
+        .catch(error => {
+          console.error('发生错误:', error);
+        });
+      }
+    }
+  </script>
+</body>
+</html> -->
+<!-- 第三版 -->
+<!-- <!DOCTYPE html>
+<html>
+<head>
+  <title>Chat Application</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>私人助手-William</h1>
+    </header>
+    <div class="chat-window" id="chat-window">
+      <div class="message received">
+        <div class="message-content">
+          <span class="username">William:</span>
+          <span class="text">CoCo你好，有什么可以帮助你的？</span>
+        </div>
+        <img src="william_avatar.jpg" alt="William's Avatar" class="avatar">
+      </div>
+    </div>
+    <div class="input-container">
+      <input type="text" id="user-input" placeholder="Type your message here..." onkeypress="sendMessageOnEnter(event)">
+      <button id="send-button">Send</button>
+    </div>
+  </div>
+
+  <script>
+    function sendMessageOnEnter(event) {
+      if (event.key === 'Enter') {
+        sendMessage();
+      }
+    }
+
+    function sendMessage() {
+      var userInput = document.getElementById('user-input').value.trim();
+      if (userInput !== '') {
+        var messageContainer = document.createElement('div');
+        messageContainer.classList.add('message', 'sent');
+        var userAvatar = document.createElement('img');
+        userAvatar.src = 'user.jpg'; // 用户的头像路径
+        userAvatar.alt = 'User Avatar';
+        userAvatar.classList.add('avatar');
+        messageContainer.appendChild(userAvatar);
+        var messageContent = document.createElement('div');
+        messageContent.classList.add('message-content', 'user-message');
+        var usernameSpan = document.createElement('span');
+        usernameSpan.classList.add('username');
+        usernameSpan.textContent = 'CoCo: ';
+        messageContent.appendChild(usernameSpan);
+        var message = document.createElement('span');
+        message.classList.add('text');
+        message.textContent = userInput;
+        messageContent.appendChild(message);
+        messageContainer.appendChild(messageContent);
+        document.getElementById('chat-window').appendChild(messageContainer);
+        document.getElementById('user-input').value = '';
+
+        const servers = axios.create({
+          baseURL: 'http://47.102.135.108:9850', // 修改为正确的 baseURL
+        });
+
+        // 向后端发送数据
+        servers.post('/chat', { question: userInput }, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then(response => {
+          // 获取服务器返回的数据
+          var data = response.data;
+          var botResponse = data.response;
+          var botMessageContainer = document.createElement('div');
+          botMessageContainer.classList.add('message', 'received');
+          var botAvatar = document.createElement('img');
+          botAvatar.src = 'rotbot.jpg'; // 机器人的头像路径
+          botAvatar.alt = 'William\'s Avatar';
+          botAvatar.classList.add('avatar');
+          botMessageContainer.appendChild(botAvatar);
+          var botMessageContent = document.createElement('div');
+          botMessageContent.classList.add('message-content', 'bot-message');
+          var botUsernameSpan = document.createElement('span');
+          botUsernameSpan.classList.add('username');
+          botUsernameSpan.textContent = 'William: ';
+          botMessageContent.appendChild(botUsernameSpan);
+          var botMessage = document.createElement('span');
+          botMessage.classList.add('text');
+          botMessage.textContent = botResponse;
+          botMessageContent.appendChild(botMessage);
+          botMessageContainer.appendChild(botMessageContent);
+          document.getElementById('chat-window').appendChild(botMessageContainer);
+        })
+        .catch(error => {
+          console.error('发生错误:', error);
+        });
+      }
+    }
+  </script>
+</body>
+</html> -->
+
+<!-- 第四版 -->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chat Application</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <!-- <header>
+      <h1>私人助手-William</h1>
+    </header>
+    <div class="chat-window" id="chat-window">
+      <div class="message received">
+        <div class="avatar-container">
+          <img src="rotbot.jpg" alt="William's Avatar" class="avatar">
+          <span class="username">William</span>
+        </div>
+        <div class="text-container">
+          <span class="text">CoCo你好，有什么可以帮助你的？</span>
+        </div>
+      </div>
+    </div>
+    <div class="input-container">
+      <input type="text" id="user-input" placeholder="Type your message here..." onkeypress="sendMessageOnEnter(event)">
+      <button id="send-button">Send</button>
+    </div>
+  </div> -->
+  <div class="container">
+    <header>
+      <h1>私人助手-William</h1>
+    </header>
+    <div class="chat-window" id="chat-window">
+      <!-- User message -->
+      <!-- <div class="message sent">
+        <div class="user-info">
+          <div class="avatar-container">
+            <img src="user.jpg" alt="CoCo's Avatar" class="avatar">
+          </div>
+          <span class="username">CoCo</span>
+        </div>
+        <div class="text-container">
+          <span class="text">User's message here...</span>
+        </div>
+      </div> -->
+      <!-- Bot message -->
+      <div class="message received">
+        <div class="user-info">
+          <div class="avatar-container">
+            <img src="rotbot.jpg" alt="William's Avatar" class="avatar">
+          </div>
+          <span class="username">William</span>
+        </div>
+        <div class="text-container">
+          <span class="text">你好，有什么可以帮助你的？</span>
+        </div>
+      </div>
+    </div>
+    <div class="input-container">
+      <input type="text" id="user-input" placeholder="Type your message here..." onkeypress="sendMessageOnEnter(event)">
+      <button id="send-button">Send</button>
+    </div>
+  </div>  
+
+  <script>
+    function sendMessageOnEnter(event) {
+      if (event.key === 'Enter') {
+        sendMessage();
+      }
+    }
+
+    // function sendMessage() {
+    //   var userInput = document.getElementById('user-input').value.trim();
+    //   if (userInput !== '') {
+    //     var messageContainer = document.createElement('div');
+    //     messageContainer.classList.add('message', 'sent');
+    //     var userAvatar = document.createElement('img');
+    //     userAvatar.src = 'user.jpg'; // 用户的头像路径
+    //     userAvatar.alt = 'CoCo';
+    //     userAvatar.classList.add('avatar');
+    //     var usernameSpan = document.createElement('span');
+    //     usernameSpan.classList.add('username');
+    //     usernameSpan.textContent = 'CoCo';
+    //     var messageContent = document.createElement('span');
+    //     messageContent.classList.add('text');
+    //     messageContent.textContent = userInput;
+    //     messageContainer.appendChild(userAvatar);
+    //     messageContainer.appendChild(usernameSpan);
+    //     messageContainer.appendChild(messageContent);
+    //     document.getElementById('chat-window').appendChild(messageContainer);
+    //     document.getElementById('user-input').value = '';
+
+    // function sendMessage() {
+    //   var userInput = document.getElementById('user-input').value.trim();
+    //   if (userInput !== '') {
+    //     var chatWindow = document.getElementById('chat-window');
+
+    //     var userMessageContainer = document.createElement('div');
+    //     userMessageContainer.classList.add('message', 'sent');
+
+    //     var userMessage = document.createElement('div');
+    //     userMessage.classList.add('user-info');
+
+    //     var userAvatarContainer = document.createElement('div');
+    //     userAvatarContainer.classList.add('avatar-container');
+    //     var userAvatar = document.createElement('img');
+    //     userAvatar.src = 'user.jpg'; // 用户的头像路径
+    //     userAvatar.alt = 'CoCo';
+    //     userAvatar.classList.add('avatar');
+    //     userAvatarContainer.appendChild(userAvatar);
+
+    //     var usernameSpan = document.createElement('span');
+    //     usernameSpan.classList.add('username');
+    //     usernameSpan.textContent = 'CoCo';
+
+    //     var textContainer = document.createElement('div');
+    //     textContainer.classList.add('text-container');
+    //     var messageContent = document.createElement('span');
+    //     messageContent.classList.add('text');
+    //     messageContent.textContent = userInput;
+    //     textContainer.appendChild(messageContent);
+
+    //     userMessage.appendChild(userAvatarContainer);
+    //     userMessage.appendChild(usernameSpan);
+    //     userMessageContainer.appendChild(userMessage);
+    //     userMessageContainer.appendChild(textContainer);
+
+    //     chatWindow.appendChild(userMessageContainer);
+    //     document.getElementById('user-input').value = '';
+
+    function sendMessage() {
+      var userInput = document.getElementById('user-input').value.trim();
+      if (userInput !== '') {
+        var chatWindow = document.getElementById('chat-window');
+
+        var userMessageContainer = document.createElement('div');
+        userMessageContainer.classList.add('message', 'sent');
+
+        var userAvatarContainer = document.createElement('div');
+        userAvatarContainer.classList.add('avatar-container', 'right');
+
+        var userAvatar = document.createElement('img');
+        userAvatar.src = 'user.jpg'; // 用户的头像路径
+        userAvatar.alt = 'CoCo';
+        userAvatar.classList.add('avatar');
+
+        var usernameSpan = document.createElement('span');
+        usernameSpan.classList.add('username', 'right');
+        usernameSpan.textContent = 'CoCo';
+
+        userAvatarContainer.appendChild(userAvatar);
+        userMessageContainer.appendChild(userAvatarContainer);
+        userMessageContainer.appendChild(usernameSpan);
+
+        var textContainer = document.createElement('div');
+        textContainer.classList.add('text-container');
+
+        var messageContent = document.createElement('span');
+        messageContent.classList.add('text');
+        messageContent.textContent = userInput;
+        textContainer.appendChild(messageContent);
+
+        userMessageContainer.appendChild(textContainer);
+        chatWindow.appendChild(userMessageContainer);
+        document.getElementById('user-input').value = '';
+
+
+        const servers = axios.create({
+          baseURL: 'http://47.102.135.108:9850', // 修改为正确的 baseURL
+        });
+
+        // 向后端发送数据
+        servers.post('/chat', { question: userInput }, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        // .then(response => {
+        //   // 获取服务器返回的数据
+        //   var data = response.data;
+        //   var botResponse = data.response;
+        //   var botMessageContainer = document.createElement('div');
+        //   botMessageContainer.classList.add('message', 'received');
+        //   var botAvatar = document.createElement('img');
+        //   botAvatar.src = 'rotbot.jpg'; // 机器人的头像路径
+        //   botAvatar.alt = 'William';
+        //   botAvatar.classList.add('avatar');
+        //   var botUsernameSpan = document.createElement('span');
+        //   botUsernameSpan.classList.add('username');
+        //   botUsernameSpan.textContent = 'William';
+        //   var botMessageContent = document.createElement('span');
+        //   botMessageContent.classList.add('text');
+        //   botMessageContent.textContent = botResponse;
+        //   botMessageContainer.appendChild(botAvatar);
+        //   botMessageContainer.appendChild(botUsernameSpan);
+        //   botMessageContainer.appendChild(botMessageContent);
+        //   document.getElementById('chat-window').appendChild(botMessageContainer);
+        .then(response => {
+  // 获取服务器返回的数据
+          var data = response.data;
+          var botResponse = data.response;
+  
+          var botMessageContainer = document.createElement('div');
+          botMessageContainer.classList.add('message', 'received');
+
+          var botAvatar = document.createElement('img');
+          botAvatar.src = 'rotbot.jpg'; // 机器人的头像路径
+          botAvatar.alt = 'William';
+          botAvatar.classList.add('avatar');
+
+          var botUsernameSpan = document.createElement('span');
+          botUsernameSpan.classList.add('username');
+          botUsernameSpan.textContent = 'William';
+
+          var botMessageContent = document.createElement('span');
+          botMessageContent.classList.add('text');
+          botMessageContent.textContent = botResponse;
+
+          botMessageContainer.appendChild(botAvatar);
+          botMessageContainer.appendChild(botUsernameSpan);
+
+  // 创建一个容器用于装载头像和名字，放在消息内容上面
+          var headerContainer = document.createElement('div');
+          headerContainer.appendChild(botAvatar);
+          headerContainer.appendChild(botUsernameSpan);
+
+  // 将头像和名字放在消息内容之前
+          botMessageContainer.appendChild(headerContainer);
+          botMessageContainer.appendChild(botMessageContent);
+
+          document.getElementById('chat-window').appendChild(botMessageContainer);
+        })
+        .catch(error => {
+          console.error('发生错误:', error);
+        });
+      }
+    }
+  </script>
 </body>
 </html>

@@ -11,12 +11,12 @@ document.getElementById('send-button').addEventListener('click', function() {
       document.getElementById('user-input').value = '';
   
       // 向后端发送数据
-      fetch('http://47.102.135.108:9843/chat', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ question: userInput }), // 使用 question 字段
+      axios.post('http://47.102.135.108:9850/chat', {
+        //'que':1
+           headers: {
+               'Content-Type': 'application/json',
+           },
+           body: JSON.stringify({ question: userInput }), // 使用 question 字段
       })
       .then(response => response.json())
       .then(data => {
